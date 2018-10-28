@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<vehicle type="Im_Epic">
+	<!-- TRAILER - Use DynamicHose -->
+	<inputAttacherJoints>
+		<inputAttacherJoint index="0>4" jointType="trailerLow" />
+    </inputAttacherJoints>
+	
+	<!-- Notes:
+		skinnedNode section is removed
+		movingPart section arent directly needed, its done trough script this time to make it simpler for you.
+		The node you used for the movingPart on the older version is the same index which you need to use for "lastHoseIKNode"
+		Detached node arent forced this time around
+		
+		== Advanced ==
+		The attacherJoints will use the 1th hose "set" by default but if you need to make use of another set then add this to your attacherJoint dynamicHoseIndice="1" (will use set 2) 
+		<inputAttacherJoint index="0>4" jointType="trailerLow" dynamicHoseIndice="1" />
+	-->
+	<dynamicHose>
+		<!-- this 1th "set" will attach to the 1th inputAttacherJoint -->
+		<set toolIndices="0">
+			<hose type="electric" attached="0>9|1|1" detached="0>9|0|0" lastHoseIKNode="0>9|1|0|0" />
+			<hose type="air" attached="0>9|1|3" lastHoseIKNode="0>9|1|2|0" />
+			<hose type="hydraulic" attached="0>9|1|5" lastHoseIKNode="0>9|1|4|0" />
+			<hose type="hydraulic" attached="0>9|1|7" lastHoseIKNode="0>9|1|6|0" />
+			<hose type="hydraulic" attached="0>9|1|9" lastHoseIKNode="0>9|1|8|0" />
+			<hose type="hydraulic" attached="0>9|1|11" lastHoseIKNode="0>9|1|10|0" />
+			<hose type="hydraulic" attached="0>9|1|13" lastHoseIKNode="0>9|1|12|0" />
+		</set>
+	</dynamicHose>
+	
+	
+	
+	<!-- TRACTOR - Use DynamicHoseRef -->
+	
+	<!--
+		The idea here is that you would only need to create 1 set (ref points) which your tractor could use for multiply attacherJoints (very usefull for rear where there are at least 2 joints)
+		
+		What you need to do is add this little line 
+		dynamicHoseIndice="0" 
+		to you attacherJoint to let it know which ref point set it should be using 
+	-->
+	
+	<attacherJoints comboDuration="2">
+        <attacherJoint dynamicHoseIndice="0" index="0>11|0|0" rotationNode="0>11" lowerRotation="-18 0 0" upperRotation="21 0 0" rotationNode2="0>11|0" upperDistanceToGround="1.03" lowerDistanceToGround="0.1" lowerRotLimit="0 0 20" lowerTransLimit="0 0.5 0" moveTime="2.5" comboTime="1">
+            <bottomArm rotationNode="0>12" translationNode="0>12|0" referenceNode="0>12|0|0" zScale="-1"/>
+            <topArm baseNode="0>13" filename="$data/shared/vehicleParts/upperLink.i3d" zScale="-1"/>
+            <schema position="1 0" rotation="0" invertX="false"/>
+        </attacherJoint>
+        <attacherJoint dynamicHoseIndice="1" index="0>16|0|0" rotationNode="0>16" lowerRotation="15 0 0" upperRotation="-30 0 0" rotationNode2="16|0" upperDistanceToGround="1.03" lowerDistanceToGround="0.1" lowerRotLimit="0 0 20" lowerTransLimit="0 0.4 0" moveTime="2.5" comboTime="0">
+            <bottomArm rotationNode="0>17" translationNode="17|0" referenceNode="17|0|0" zScale="1"/>
+            <topArm baseNode="0>18" filename="$data/shared/vehicleParts/upperLink.i3d" zScale="1" toggleVisibility="true"/>
+            <schema position="0 0" rotation="0" invertX="true"/>
+        </attacherJoint>
+        <attacherJoint dynamicHoseIndice="0" index="0>19|0" jointType="trailer" allowsJointLimitMovement="false" upperRotationOffset="0" lowerRotLimit="10 80 80" transNode="0>19" transNodeMinY="0.62" transNodeMaxY="1.1" comboTime="1">
+            <schema position="1 0" rotation="0" invertX="false"/>
+        </attacherJoint>
+        <attacherJoint dynamicHoseIndice="0" index="0>21" jointType="trailerLow" allowsJointLimitMovement="false" upperRotationOffset="0" lowerRotLimit="10 50 50" comboTime="1">
+            <schema position="1 0" rotation="0" invertX="false"/>
+        </attacherJoint>
+    </attacherJoints>
+	
+	<dynamicHose>
+		<!-- rear - ref point set 0 -->
+		<set>
+			<!-- Type 1 - This will create an ref point for you at given position -->
+			<ref type="hydraulic" create="true" linkNode="0>" position="-0.066 1.324 -1.415" rotation="10.655 0 0" />
+			<ref type="hydraulic" create="true" linkNode="0>" position="-0.12 1.324 -1.415" rotation="10.655 0 0" />
+			<ref type="hydraulic" create="true" linkNode="0>" position="-0.059 1.243 -1.43" rotation="10.655 0 0" />
+			<ref type="air" create="true" linkNode="0>" position="-0.115 1.243 -1.43" rotation="10.655 0 0" />
+			<ref type="electric" index="0>10" />
+		</set>
+		
+		<!-- rear - ref point set 1 -->
+		<set>
+			<!-- Type 2 - This will only need an node index to work -->
+			<ref type="hydraulic" index="0>25" />
+		</set>
+	</dynamicHose>
+</vehicle>
